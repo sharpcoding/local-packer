@@ -33,6 +33,10 @@ export const modifyPackageVersions = async ({
 }: Args): Promise<RuntimeContext> => {
   for (const packageName of step.payload.packages) {
     const packageJson = await readPackageJson({ context, packageName });
+    if (!packageJson) {
+      context.stopExecution = true;
+      return context;
+    }
     const { newVersion, originalVersion } = getVersions({
       context,
       packageJson,

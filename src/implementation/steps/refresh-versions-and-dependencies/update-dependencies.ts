@@ -20,9 +20,13 @@ export const updateDependencies = async ({
       context,
       packageName,
     });
-    const json = await readPackageJson({ context, packageName });
+    const packageJson = await readPackageJson({ context, packageName });
+    if (!packageJson) {
+      context.stopExecution = true;
+      return context;
+    }
     const newDependencies: Record<string, string> = {};
-    for (const dependency of Object.keys(json.dependencies)) {
+    for (const dependency of Object.keys(packageJson.dependencies)) {
       if (context.packages[dependency]?.newVersion) {
         newDependencies[dependency] = [
           ["file:", project.paths.tarballPath].join(""),
@@ -41,9 +45,9 @@ export const updateDependencies = async ({
         packageJsonPath,
         JSON.stringify(
           {
-            ...json,
+            ...packageJson,
             dependencies: {
-              ...json.dependencies,
+              ...packageJson.dependencies,
               ...newDependencies,
             },
           },

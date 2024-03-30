@@ -25,6 +25,10 @@ export const compileAndMakeTarball = async ({
     context,
     packageName: step.payload.package,
   });
+  if (!packageJson) {
+    context.stopExecution = true;
+    return context;
+  }
   if (
     !(await makeSureScriptsAreCorrect({
       context,
