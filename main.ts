@@ -1,15 +1,14 @@
 import { terminal } from "terminal-kit";
 
-import { sokobanProject } from "./example/sokoban";
-import { initializeRuntimeContext } from "./src/implementation";
+import { initializeRuntimeContext, loadProject } from "./src/implementation";
 import {
   compileAndMakeTarball,
   npmInstall,
-  refreshVersionsAndDependencies,
+  createNewPackageVersions,
 } from "./src/implementation/steps";
 import { ExecutesWithProject } from "./src/types";
 
-const main = async ({ project }: ExecutesWithProject) => {
+const processSteps = async ({ project }: ExecutesWithProject) => {
   let context = initializeRuntimeContext({ project });
   for (const step of project.steps) {
     switch (step.name) {
@@ -21,8 +20,8 @@ const main = async ({ project }: ExecutesWithProject) => {
         context = await npmInstall({ context, project, step });
         break;
       }
-      case "refresh-versions-and-dependencies": {
-        context = await refreshVersionsAndDependencies({
+      case "create-new-package-versions": {
+        context = await createNewPackageVersions({
           context,
           project,
           step,
@@ -35,9 +34,16 @@ const main = async ({ project }: ExecutesWithProject) => {
     }
   }
   if (!context.stopExecution) {
-    terminal.green(`✅🙌 all ${project.steps.length} steps executed successfully\n`);
+    terminal.green(
+      `✅🙌 all ${project.steps.length} steps executed successfully\n`
+    );
   }
-  terminal.processExit(0);
 };
 
-main({ project: sokobanProject });
+const project = await loadProject();
+if (!project) {
+  terminal.red("❌ project not loaded\n");
+} else {
+  await processSteps({ project });
+}
+terminal().processExit(0);

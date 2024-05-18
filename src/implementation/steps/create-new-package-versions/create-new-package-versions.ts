@@ -13,7 +13,7 @@ interface Args extends ExecutesWithProject, ExecutesWithRuntimeContext {
   step: RefreshVersionsAndDependenciesStep;
 }
 
-export const refreshVersionsAndDependencies = async ({
+export const createNewPackageVersions = async ({
   context: argsContext,
   project,
   step,

@@ -55,9 +55,9 @@ export const updateDependencies = async ({
           2
         )
       );
-      terminal.green(packageName)(`: modified ${modified} entries\n`);
+      terminal.green(packageName)(`: modified ${modified} entries in package.json\n`);
     } else {
-      terminal.green(packageName)(`: not modified anything\n`);
+      terminal.green(packageName)(`: package.json not modified\n`);
     }
   }
   return context;

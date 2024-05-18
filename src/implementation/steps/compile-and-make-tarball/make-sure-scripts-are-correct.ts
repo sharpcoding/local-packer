@@ -69,6 +69,7 @@ export const makeSureScriptsAreCorrect = async ({
     terminal(
       `${step.payload.package}: stopping the steps execution because package.json was modified\n`
     );
+    Bun.openInEditor(context.packages[step.payload.package].fullPath);
     return false;
   }
   return true;

@@ -7,15 +7,18 @@ export interface Project {
   name: string;
   paths: {
     /**
-     * Relative package paths to the `root`.
+     * Paths are relative to the `root` folder
      */
     packages: string[] | Record<string, string>;
+    
     /**
      * Root package path.
      */
     root: string;
     /**
      * Path to place the tgz (tarball) files.
+     * Please use `~` to represent the home directory.
+     * Make sure directory exists.
      */
     tarballPath: string;
   };

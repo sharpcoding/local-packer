@@ -1,12 +1,12 @@
 export type RefreshVersionsAndDependenciesStep = {
-  name: "refresh-versions-and-dependencies";
+  name: "create-new-package-versions";
   payload: {
     packages: string[];
   };
 };
 
 export type UpdateDependenciesStep = {
-  name: "refresh-versions-and-dependencies";
+  name: "create-new-package-versions";
 };
 
 export type NpmInstallStep = {

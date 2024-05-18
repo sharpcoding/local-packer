@@ -1,5 +1,3 @@
-const path = require("path");
-
 import {
   ExecutesWithProject,
   PackageRuntimeContext,
@@ -19,7 +17,9 @@ const format = (date: Date) => {
     .join("");
 };
 
-const toLookup = (packages: string[] | Record<string, string>) => {
+const toLookup = (
+  packages: string[] | Record<string, string>
+): Record<string, string> => {
   if (Array.isArray(packages)) {
     return packages.reduce((acc, packageName) => {
       return { ...acc, [packageName]: packageName };
@@ -33,9 +33,7 @@ export const initializeRuntimeContext = ({ project }: ExecutesWithProject) => {
   const result: RuntimeContext = {
     packages: Object.keys(packagesLookup).reduce(
       (acc: Record<string, PackageRuntimeContext>, packageName: string) => {
-        const fullPath = [project.paths.root, packagesLookup[packageName]].join(
-          path.sep
-        );
+        const fullPath = [project.paths.root, packagesLookup[packageName]].join("/");
         return {
           ...acc,
           [packageName]: {
